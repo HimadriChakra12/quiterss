@@ -28,7 +28,7 @@ class Dialog : public QDialog
 {
   Q_OBJECT
 public:
-  explicit Dialog(QWidget *parent, Qt::WindowFlags flag = 0);
+  explicit Dialog(QWidget *parent, Qt::WindowFlags flag = {});
 
   QVBoxLayout *mainLayout;
   QVBoxLayout *pageLayout;

@@ -1,47 +1,56 @@
 /* ============================================================
-* QuiteRSS is a open-source cross-platform RSS/Atom news feeds reader
-* Copyright (C) 2011-2021 QuiteRSS Team <quiterssteam@gmail.com>
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
-* ============================================================ */
+ * Settings — thin shim that delegates everything to LuaSettings.
+ * All existing call sites (mainwindow.cpp etc.) include this header
+ * and use the same API — nothing else needs to change.
+ * ============================================================ */
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#include <QSettings>
+#include "luasettings.h"
 #include <QVariant>
+#include <QString>
 
 class Settings
 {
 public:
-  explicit Settings();
-  ~Settings();
+  explicit Settings() {}
+  ~Settings() {}
 
-  static void createSettings(const QString &fileName = QString());
-  static QSettings* getSettings();
-  static void syncSettings();
-  QString fileName();
+  static void createSettings(const QString &fileName = QString()) {
+    LuaSettings::createSettings(fileName);
+  }
 
-  void beginGroup(const QString &prefix);
-  void endGroup();
+  static LuaSettings* getSettings() {
+    return LuaSettings::getSettings();
+  }
 
-  void setValue(const QString &key, const QVariant &defaultValue = QVariant());
-  QVariant value(const QString &key, const QVariant &defaultValue = QVariant());
-  bool contains(const QString &key);
+  static void syncSettings() {
+    LuaSettings::syncSettings();
+  }
 
-private:
-  static QSettings* settings_;
+  QString fileName() {
+    return LuaSettings::getSettings()->fileName();
+  }
 
+  void beginGroup(const QString &prefix) {
+    LuaSettings::getSettings()->beginGroup(prefix);
+  }
+
+  void endGroup() {
+    LuaSettings::getSettings()->endGroup();
+  }
+
+  void setValue(const QString &key, const QVariant &value = QVariant()) {
+    LuaSettings::getSettings()->setValue(key, value);
+  }
+
+  QVariant value(const QString &key, const QVariant &defaultValue = QVariant()) {
+    return LuaSettings::getSettings()->value(key, defaultValue);
+  }
+
+  bool contains(const QString &key) {
+    return LuaSettings::getSettings()->contains(key);
+  }
 };
 
 #endif // SETTINGS_H

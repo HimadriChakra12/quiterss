@@ -86,6 +86,7 @@ HEADERS += \
     src/notifications/notificationsnewsitem.h \
     src/notifications/notificationswidget.h \
     src/application/mainapplication.h \
+    src/application/luasettings.h \
     src/application/settings.h \
     src/application/logfile.h \
     src/application/mainwindow.h \
@@ -155,6 +156,7 @@ SOURCES += \
     src/notifications/notificationsnewsitem.cpp \
     src/notifications/notificationswidget.cpp \
     src/application/mainapplication.cpp \
+    src/application/luasettings.cpp \
     src/application/settings.cpp \
     src/application/logfile.cpp \
     src/application/mainwindow.cpp \
@@ -236,6 +238,18 @@ include(3rdparty/ganalytics/ganalytics.pri)
 
 win32 {
   TARGET = QuiteRSS
+}
+
+# ---- Lua linkage ----
+# Linux: pacman -S lua54  (or lua53)
+# Windows/MinGW: yay -S mingw-w64-lua
+unix {
+  CONFIG += link_pkgconfig
+  PKGCONFIG += lua5.4
+}
+win32 {
+  LIBS += -llua54
+  INCLUDEPATH += $$[QT_HOST_PREFIX]/include/lua5.4
 }
 
 win32 {

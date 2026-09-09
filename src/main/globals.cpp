@@ -85,11 +85,10 @@ void Globals::init()
     dir.mkpath(dataDir_);
   }
 
-  // settings ...
-  QSettings::setDefaultFormat(QSettings::IniFormat);
+  // settings (now Lua-backed, no IniFormat needed)
   QString settingsFileName;
   if (isPortable_)
-    settingsFileName = dataDir_ % "/" % QCoreApplication::applicationName() % ".ini";
+    settingsFileName = dataDir_ % "/" % QCoreApplication::applicationName() % ".lua";
   Settings::createSettings(settingsFileName);
 
   Settings settings;
