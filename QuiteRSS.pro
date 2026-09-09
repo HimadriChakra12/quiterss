@@ -4,7 +4,7 @@ QMAKE_DISTCLEAN += $$REVFILE
 exists(.git) {
   VERSION_REV = $$system(git rev-list master --count)
   count(VERSION_REV, 1) {
-    os2|win32|mac {
+    win32 {
       # FIXME
       VERSION_REV = $$VERSION_REV
     } else {
@@ -234,7 +234,7 @@ include(lang/lang.pri)
 include(3rdparty/qupzilla/qupzilla.pri)
 include(3rdparty/ganalytics/ganalytics.pri)
 
-os2|win32|mac {
+win32 {
   TARGET = QuiteRSS
 }
 
@@ -322,28 +322,6 @@ unix:!mac {
   INSTALLS += translations sound style
 }
 
-mac {
-  CONFIG += app_bundle
-  QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.6
-
-  QMAKE_INFO_PLIST = Info.plist
-  ICON = quiterss.icns
-
-  bundle_target.files += AUTHORS
-  bundle_target.files += COPYING
-  bundle_target.files += CHANGELOG
-  bundle_target.files += README.md
-  bundle_target.files += sound
-  bundle_target.files += style
-  bundle_target.path = Contents/Resources
-  QMAKE_BUNDLE_DATA += bundle_target
-
-  translations.files = $$quote($$DESTDIR/lang)
-  translations.path =  Contents/Resources
-  QMAKE_BUNDLE_DATA += translations
-
-  INSTALLS += bundle_target translations
-}
 
 RESOURCES += \
     QuiteRSS.qrc
@@ -358,7 +336,6 @@ OTHER_FILES += \
     AUTHORS \
     CHANGELOG \
     INSTALL \
-    Info.plist
 
 FORMS += \
     src/adblock/adblockdialog.ui \
